@@ -14,6 +14,8 @@ Vue.use(VueFire)
 /* eslint space-before-blocks: "error" */
 /* eslint space-before-function-paren: "error" */
 /* eslint-env es6 */
+/* eslint padded-blocks: ["error", { "blocks": "always" }] */
+/* eslint no-unused-vars: "error" */
 new Vue({
     el: '#app',
     template: '<App/>',
