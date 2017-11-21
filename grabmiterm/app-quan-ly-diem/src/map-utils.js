@@ -28,11 +28,10 @@ const isNearCustomerWithinRadius = (customerPoint, driverPoint, fromRadius, toRa
   else return -1
 }
 
-var directionsDisplay;
+var directionsDisplay = new google.maps.DirectionsRenderer();
 var directionsService = new google.maps.DirectionsService();
 var map;
 const initializeDirectionsService = () => {
-  directionsDisplay = new google.maps.DirectionsRenderer();
   map = global.map.$mapObject
   directionsDisplay.setMap(map);
 }

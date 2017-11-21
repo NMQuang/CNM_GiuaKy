@@ -49,7 +49,7 @@
             <th scope="col">Xe</th>
             <th scope="col">Loại xe</th>
             <th scope="col">Trạng thái</th>
-            <th scope="col">Khoảng cách</th>
+            <th scope="col">Khoảng cách(m)</th>
             <th scope="col"></th>
           </tr>
         </thead>
@@ -72,7 +72,7 @@
 <script>
 import GoogleMap from './GoogleMap.vue'
 import { pointsRef, driversRef } from '../firebase.js'
-import { searchPlace, isNearCustomerWithinRadius } from '../map-utils'
+import { searchPlace, isNearCustomerWithinRadius, initializeDirectionsService, calcRoute } from '../map-utils'
 
 export default {
   name: 'VinhNguyen',
@@ -177,8 +177,8 @@ export default {
       this.$store.commit('SET_MARKER_POSITION', position)
     },
     submitPointToDriver: function(key) {
-      pointsRef.child(this.selectedPoint['.key']).update({"status": true })
-      driversRef.child(key).update({"status": "busy" , "pointId": this.selectedPoint['.key']})
+      pointsRef.child(this.selectedPoint['.key']).update({"status": true, "driverId": key})
+      driversRef.child(key).update({"status": "busy"})
       this.selectedPoint = []
       this.drivers = []
       this.mappAddress = ''
