@@ -87,7 +87,8 @@ export default {
         place: '',
         type: '',
         status: '',
-        sđt: ''
+        sđt: '',
+        location: 'null'
       }
     }
   },
@@ -99,6 +100,7 @@ export default {
       self.newPoint.place = ''
       self.newPoint.type = ''
       self.newPoint.sđt = ''
+      self.newPoint.location = 'null'
     },
     deletePoint: function (point) {
       var rs = confirm('Are you really remove this point?')
