@@ -1,13 +1,13 @@
-/*eslint-disable*/
+/* eslint-disable */
 import Firebase from 'firebase'
 
 const config = {
-  apiKey: 'AIzaSyBDOa513-q8BmPHmm1zlurdkkot3Z3bX-w',
-  authDomain: 'grab-midterm.firebaseapp.com',
-  databaseURL: 'https://grab-midterm.firebaseio.com',
-  projectId: 'grab-midterm',
-  storageBucket: 'grab-midterm.appspot.com',
-  messagingSenderId: '495408687232'
+    apiKey: 'AIzaSyBDOa513-q8BmPHmm1zlurdkkot3Z3bX-w',
+    authDomain: 'grab-midterm.firebaseapp.com',
+    databaseURL: 'https://grab-midterm.firebaseio.com',
+    projectId: 'grab-midterm',
+    storageBucket: 'grab-midterm.appspot.com',
+    messagingSenderId: '495408687232'
 }
 
 const app = Firebase.initializeApp(config)
@@ -15,16 +15,16 @@ const db = app.database()
 
 const pointsRef = db.ref('points')
 const driversRef = db.ref('drivers')
-// var testData = {
-//   random_firstname: ['Trần', 'Nguyễn', 'Lý', 'Hoàng', 'Thái', 'Ngô'],
-//   random_midname: ['Thị', 'Văn', 'Ngọc', 'Kim'],
-//   random_lastname: ['Vinh', 'Sơn', 'Hải', 'Vũ', 'Quang', 'Phước', 'Phúc', 'Chi', 'Tiến', 'Tuyền'],
-//   vehicle: ['Sirius', 'Lead', 'Wave Alpha', 'SH', 'Exciter']
-// }
-// var circle1 = new google.maps.Circle({
-//   center: new google.maps.LatLng(10.771129, 106.696045),
-//   radius: 1000
-// });
+    // var testData = {
+    //   random_firstname: ['Trần', 'Nguyễn', 'Lý', 'Hoàng', 'Thái', 'Ngô'],
+    //   random_midname: ['Thị', 'Văn', 'Ngọc', 'Kim'],
+    //   random_lastname: ['Vinh', 'Sơn', 'Hải', 'Vũ', 'Quang', 'Phước', 'Phúc', 'Chi', 'Tiến', 'Tuyền'],
+    //   vehicle: ['Sirius', 'Lead', 'Wave Alpha', 'SH', 'Exciter']
+    // }
+    // var circle1 = new google.maps.Circle({
+    //   center: new google.maps.LatLng(10.771129, 106.696045),
+    //   radius: 1000
+    // });
 
 // var circle2 = new google.maps.Circle({
 //   center: new google.maps.LatLng(10.786812, 106.701710),

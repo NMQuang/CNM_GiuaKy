@@ -1,34 +1,45 @@
-export const UPDATE_AUTH = (state, auth) => {
-  state.auth = auth
-}
+ /* eslint-disable no-new */
+ /* eslint comma-spacing: ["error", { "before": false, "after": true }] */
+ /* eslint-disable no-new */
+ /* eslint indent: ["error", "tab"] */
+ /* eslint indent: ["error", 4, { "VariableDeclarator": 1 }] */
+ /* eslint-env es6 */
+ /* eslint-disable eol-last */
+ /* eslint-env es6 */
+ /* eslint no-extra-semi: "error" */
+ /* eslint space-before-function-paren: ["error", "never"] */
+ /* eslint-env es6 */
+ export const UPDATE_AUTH = (state, auth) => {
+     state.auth = auth
+ }
 
-export const UPDATE_USER = (state, user) => {
-  state.user = user
-}
+ export const UPDATE_USER = (state, user) => {
+     state.user = user
+ }
 
-export const APPNAV_SEARCH = (state, searchData) => {
-  state.appnav = searchData
-}
+ export const APPNAV_SEARCH = (state, searchData) => {
+     state.appnav = searchData
+ }
 
-export const SET_MARKER_POSITION = (state, newMarker) => {
-  state.markers = [{ position: newMarker }]
-  state.center = newMarker
-}
+ export const SET_MARKER_POSITION = (state, newMarker) => {
+     state.markers = [{ position: newMarker }]
+     state.center = newMarker
+ }
 
-/**
- * Clear each property, one by one, so reactivity still works.
- *
- * (ie. clear out state.auth.isLoggedIn so Navbar component automatically reacts to logged out state,
- * and the Navbar menu adjusts accordingly)
- *
- * TODO: use a common import of default state to reset these values with.
- */
-export const CLEAR_ALL_DATA = (state) => {
-  // Auth
-  state.auth.isLoggedIn = false
-  state.auth.accessToken = null
-  state.auth.refreshToken = null
+ /**
+  * Clear each property, one by one, so reactivity still works.
+  *
+  * (ie. clear out state.auth.isLoggedIn so Navbar component automatically reacts to logged out state,
+  * and the Navbar menu adjusts accordingly)
+  *
+  * TODO: use a common import of default state to reset these values with.
+  */
+ export const CLEAR_ALL_DATA = (state) => {
+     // Auth
+     state.auth.isLoggedIn = false
+     state.auth.accessToken = null
+     state.auth.refreshToken = null
 
-  // User
-  state.user.name = ''
-}
+     // User
+     state.user.name = ''
+ }

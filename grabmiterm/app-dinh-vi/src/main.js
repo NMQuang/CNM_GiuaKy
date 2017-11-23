@@ -12,24 +12,33 @@ import './components/register.js'
 // import 'bootstrap/dist/css/bootstrap.min.css'
 // import 'bootstrap-vue/dist/bootstrap-vue.css'
 // import 'bootstrap-vue/dist/bootstrap-vue.js'
-
+/* eslint-disable */
 /* App sass */
 import './assets/style/app.scss'
 
 Vue.use(VueResource)
 Vue.use(VueFire)
 Vue.config.productionTip = false
-/* eslint-disable no-new */
-
+    /* eslint-disable no-new */
+    /* eslint comma-spacing: ["error", { "before": false, "after": true }] */
+    /* eslint-disable no-new */
+    /* eslint indent: ["error", "tab"] */
+    /* eslint indent: ["error", 4, { "VariableDeclarator": 1 }] */
+    /* eslint-env es6 */
+    /* eslint-disable eol-last */
+    /* eslint-env es6 */
+    /* eslint no-extra-semi: "error" */
+    /* eslint space-before-function-paren: ["error", "never"] */
+    /* eslint-env es6 */
 new Vue({
-  el: '#app',
-  // Attach the Vue instance to the window,
-  // so it's available globally.
-  created: function () {
-    window.Vue = this
-    window.global = global
-  },
-  router,
-  store,
-  render: h => h(App)
+    el: '#app',
+    // Attach the Vue instance to the window,
+    // so it's available globally.
+    created: function() {
+        window.Vue = this
+        window.global = global
+    },
+    router,
+    store,
+    render: h => h(App)
 })
