@@ -1,5 +1,6 @@
 <template>
   <div class="container-fluid" id="app">
+    
       <div class="row">
         <div class="col-md-4"> 
           <legend>Thông tin khách hàng</legend>
@@ -54,6 +55,7 @@
             <legend>Xem lịch sử</legend>
         </div>
       </div>
+      
     </div>
 </template>
 
