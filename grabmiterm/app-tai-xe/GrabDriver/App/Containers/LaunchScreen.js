@@ -20,7 +20,7 @@ export default class LaunchScreen extends Component {
     const resetAction = NavigationActions.reset({
       index: 0,
       actions: [
-        NavigationActions.navigate({ routeName: 'HomeScreen'})
+        NavigationActions.navigate({ routeName: 'DrawerNav'})
       ]
     })
     this.props.navigation.dispatch(resetAction)
