@@ -18,7 +18,7 @@ const metrics = {
   buttonRadius: 4,
   icons: {
     tiny: 15,
-    small: 20,
+    small: 25,
     medium: 30,
     large: 45,
     xl: 50

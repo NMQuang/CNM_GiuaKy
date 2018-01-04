@@ -2,7 +2,7 @@ import { Metrics } from '../../Themes'
 
 export default {
   image: {
-    width: Metrics.icons.medium,
-    height: Metrics.icons.medium
+    width: Metrics.icons.small,
+    height: Metrics.icons.small
   }
 }
