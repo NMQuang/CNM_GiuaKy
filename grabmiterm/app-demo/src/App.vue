@@ -30,6 +30,7 @@
             </tbody>
           </table>
         </div>
+		
         <div class="col-md-4">
             <form>
                 <legend>Đặt Grab</legend>
@@ -51,9 +52,7 @@
                 </button>
             </form>
         </div>
-        <div class="col-md-4">
-            <legend>Xem lịch sử</legend>
-        </div>
+        
       </div>
       
     </div>
