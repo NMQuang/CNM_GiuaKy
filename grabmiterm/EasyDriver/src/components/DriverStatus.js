@@ -3,9 +3,10 @@ import Icon from 'react-native-vector-icons/EvilIcons';
 import {
     Text, View
 } from 'react-native';
+import { connect } from 'react-redux';
 import styles from './styles/DriverStatusStyle';
 
-export default class DriverStatus extends Component {
+class DriverStatus extends Component {
     render() {
         return (
             <View style={styles.container}>
@@ -27,11 +28,24 @@ export default class DriverStatus extends Component {
                     </View>
                 </View>
                 <View style={styles.connectContainer}>
+                {
+                    this.props.isConnect ? 
+                    <Text>
+                        Đã kết nối
+                    </Text>
+                    :
                     <Text>
                         Mất kết nối
                     </Text>
+                }
+                    
                 </View>
             </View>
         );
     }
 }
+
+const mapStateToProps = (state) => ({
+        isConnect: state.isConnect
+    });
+export default connect(mapStateToProps)(DriverStatus);

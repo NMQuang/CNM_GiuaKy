@@ -5,7 +5,51 @@ export function updateLocationDriver(location) {
 export function initLocationDriver(location) {
     return { type: 'INIT_LOCATION', location };
 }
+export function startSignIn() {
+    return { type: 'START_SIGNIN' };
+}
 
+export function endSignIn() {
+    return { type: 'END_SIGNIN' };
+}
+
+export function signIn(user) {
+    return { type: 'SIGN_IN', user };
+}
+export function signOut() {
+    return { type: 'SIGN_OUT' };
+}
+export function signInAsync(username, password) {
+    return dispatch => {
+        dispatch(startSignIn());
+        fetch('http://192.168.1.187:3000/login', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                id: username,
+                pwd: password
+            })
+        })
+        .then((response) => response.json())
+        .then((responseJson) => {
+            console.log(responseJson);
+            const userInfo = {
+                token: responseJson.access_token,
+                userKey: responseJson.userId,
+                userName: responseJson.username
+            };
+            dispatch(signIn(userInfo));
+            dispatch(endSignIn());
+        })
+        .catch((err) => {
+            console.log(err);
+            dispatch(endSignIn());
+        });
+    };
+}
 export function initLocationDriverAsync() {
     return dispatch => navigator.geolocation.getCurrentPosition((pos) => {
         console.log(pos);
@@ -23,3 +67,7 @@ export function initLocationDriverAsync() {
             timeout: 5000
         });
 }
+export function toggleConnection() {
+    return { type: 'TOGGLE_CONNECTION' };
+}
+

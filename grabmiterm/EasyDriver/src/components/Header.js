@@ -11,6 +11,7 @@ export default class Header extends Component {
         const { navigate } = this.props.navigation;
         navigate('DrawerOpen');
     }
+    
     render() {
         return (
             <View style={styles.container}>
@@ -21,3 +22,4 @@ export default class Header extends Component {
         );
     }
 }
+
