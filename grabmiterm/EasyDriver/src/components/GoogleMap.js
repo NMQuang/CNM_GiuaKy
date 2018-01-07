@@ -1,22 +1,34 @@
 import React, { Component } from 'react';
 import { View } from 'react-native';
+import { connect } from 'react-redux';
 import MapView from 'react-native-maps';
 import styles from './styles/GoogleMapStyle';
+import { initLocationDriverAsync } from '../redux/actionCreator';
 
-export default class GoogleMap extends Component {
+class GoogleMap extends Component {
+    componentWillMount() {
+        this.props.initLocationDriverAsync();
+    }
     render() {
+        console.log(this.props);
         return (
-            <View style={styles.container}>
+            <View style={[styles.container, this.props.styles]}>
                 <MapView
+                    showsUserLocation
                     style={styles.map}
                     region={{
-                        latitude: 37.78825,
-                        longitude: -122.4324,
-                        latitudeDelta: 0.015,
-                        longitudeDelta: 0.0121,
+                        latitude: this.props.location.latitude,
+                        longitude: this.props.location.longitude,
+                        latitudeDelta: 0.1,
+                        longitudeDelta: 0.1,
                     }}
-                />
+                >
+                </MapView>
             </View>
         );
     }
 }
+
+const mapStateToProps = (state) => (state.location);
+
+export default connect(mapStateToProps, { initLocationDriverAsync })(GoogleMap);
