@@ -78,4 +78,7 @@ export function initLocationDriverAsync() {
 export function toggleConnection() {
     return { type: 'TOGGLE_CONNECTION' };
 }
+export function getUserPointData(pointData) {
+    return { type: 'GET_POINTDATA', pointData };
+}
 

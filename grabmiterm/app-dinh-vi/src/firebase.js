@@ -89,4 +89,4 @@ const driversRef = db.ref('drivers')
 //     }
 // }
 
-export { pointsRef, driversRef }
+export { pointsRef, driversRef, db }

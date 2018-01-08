@@ -70,7 +70,7 @@ export default {
       calcRoute(start,end)
     },
     cancelWait: function(pointData) {
-      driversRef.child(pointData.pointInfo.driverId).update({"status": "free", "point": null})
+      driversRef.child(pointData.pointInfo.driverId).update({"status": "free", "pointData": null})
       pointsRef.child(pointData.pointKey).update({"serviceStatus": 'processing', "driverId": null})
     }
   },

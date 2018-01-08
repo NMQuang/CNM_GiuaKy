@@ -4,9 +4,11 @@ import { connect } from 'react-redux';
 import Icon from 'react-native-vector-icons/EvilIcons';
 import styles from './styles/CustomerNotificationScreenStyle';
 import NavigatorService from '../navigations/NavigatorService';
+import Driver from '../lib/dbProcess';
 
 class CustomerNotificationScreen extends Component {
     acceptPoint() {
+        Driver.sendOnDriverWaySignal(this.props.user.pointData.pointKey);
         NavigatorService.reset('ProcessCustomerScreen');
     }
     render() {
@@ -33,12 +35,12 @@ class CustomerNotificationScreen extends Component {
                     </View>
                     <View style={styles.from}>
                         <Text style={styles.infoText}>
-                            {this.props.user.pointData.point.startPlace}
+                            {this.props.user.pointData.point.place}
                         </Text>
                     </View>
                     <View style={styles.to}>
                         <Text style={styles.infoText}>
-                        {this.props.user.pointData.point.place}
+                        {this.props.user.pointData.point.endPlace}
                         </Text>
                     </View>
                     <View style={styles.footerInfo}>
@@ -48,7 +50,7 @@ class CustomerNotificationScreen extends Component {
                         <Icon name='chevron-down' size={30} color='#fff' />
                     </View>
                 </View>
-                <TouchableOpacity onPress={this.acceptPoint} style={styles.acceptBtn}>
+                <TouchableOpacity onPress={this.acceptPoint.bind(this)} style={styles.acceptBtn}>
                     <Text style={styles.acceptText}>NHẬN CUỐC XE</Text>
                 </TouchableOpacity>
             </View>

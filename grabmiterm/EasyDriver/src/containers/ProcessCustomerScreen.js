@@ -4,6 +4,8 @@ import { connect } from 'react-redux';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import styles from './styles/ProcessCustomerScreenStyle';
 import GoogleMap from '../components/GoogleMap';
+import Driver from '../lib/dbProcess';
+import NavigatorService from '../navigations/NavigatorService';
 
 class ProcessCustomerScreen extends Component {
     constructor(props) {
@@ -13,12 +15,14 @@ class ProcessCustomerScreen extends Component {
         };
     }
     pickedPoint() {
+        Driver.sendPickedSignal(this.props.pointData.pointKey);
         this.setState({
             isPicked: true
         });
     }
     returnPoint() {
-        
+        Driver.returnPoint(this.props.pointData.pointKey, this.props.driverKey);
+        NavigatorService.reset('DrawerNavigator');
     }
     render() {
         return (
@@ -32,7 +36,7 @@ class ProcessCustomerScreen extends Component {
                     <View style={styles.midHeader}>
                         <Text style={styles.midHeaderText}>
                             {!this.state.isPicked ? 
-                                this.props.pointData.place : this.props.pointData.startPlace}
+                                this.props.pointData.endPlace : this.props.pointData.place}
                         </Text>
                     </View>
                     <View style={styles.bottomHeader}>
@@ -56,7 +60,7 @@ class ProcessCustomerScreen extends Component {
                         </TouchableOpacity>
                     </View>
                     <TouchableOpacity 
-                        onPress={!this.state.isPicked ? this.pickedPoint : this.returnPoint} 
+                        onPress={!this.state.isPicked ? this.pickedPoint.bind(this) : this.returnPoint.bind(this)} 
                         style={styles.pickCustomerBtn}
                     >
                         <Text style={styles.CustomerBtnText}>
@@ -70,6 +74,7 @@ class ProcessCustomerScreen extends Component {
 }
 
 const mapStateToProps = (state) => ({
-        pointData: state.user.pointData
+        pointData: state.user.pointData,
+        driverKey: state.user.userKey
     });
 export default connect(mapStateToProps)(ProcessCustomerScreen);
