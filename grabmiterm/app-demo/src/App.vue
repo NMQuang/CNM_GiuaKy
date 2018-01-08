@@ -31,8 +31,8 @@
                 <tr v-for="point in points">
                    
                     <th scope="row">1</th>
-                    <td>{{point.startPlace}}</td>
                     <td>{{point.place}}</td>
+                    <td>{{point.endPlace}}</td>
                     <td>{{point.type}}</td>
                     <td>{{point.sđt}}</td>
                     
@@ -49,15 +49,21 @@
                 <legend>Đặt Grab</legend>
                 <div class="form-group">
                     <label for="pointPlace">Địa điểm đón</label>
-                    <input id="pointPlace" type="text" class="form-control" placeholder="Nhập địa điểm" v-model="newPoint.startPlace">
-                </div>
-                <div class="form-group">
-                    <label for="pointPlace">Địa điểm đến</label>
                     <input id="pointPlace" type="text" class="form-control" placeholder="Nhập địa điểm" v-model="newPoint.place">
                 </div>
                 <div class="form-group">
+                    <label for="pointPlace">Địa điểm đến</label>
+                    <input id="pointPlace" type="text" class="form-control" placeholder="Nhập địa điểm" v-model="newPoint.endPlace">
+                </div>
+                <div class="form-group">
                     <label for="pointType">Loại xe</label>
-                    <input id="pointType" type="text" class="form-control" placeholder="Nhập loại xe" v-model="newPoint.type">
+                    <select v-model="newPoint.type" class="form-control form-control-sm">
+                        <option value="" selected disabled>Chọn loại xe</option>
+                        <option value="normal">Normal</option>
+                        <option value="premium">Premium</option>
+                        <option value="vip">Vip</option>
+                    </select>
+                    
                 </div>
                 <div class="form-group">
                     <label for="pointSDT">SĐT</label>
@@ -114,21 +120,33 @@ export default {
   data () {
     return {
       newPoint: {
-        startPlace: '',
+        endPlace: '',
         place: '',
         type: '',
         status: '',
         sđt: '',
         location: 'null'
-      }
+      },
+
+      typeCars: [{
+        id:1,
+        name: 'normal'
+      },
+      {
+        id:2,
+        name: 'premium'
+      }]
+
     }
+  
   },
   methods: {
     addPoint: function () {
       var self = this
       self.newPoint.status = false
+      self.newPoint.serviceStatus = 'procesing'
       pointsRef.push(self.newPoint)
-      self.newPoint.startPlace = ''
+      self.newPoint.endPlace = ''
       self.newPoint.place = ''
       self.newPoint.type = ''
       self.newPoint.sđt = ''
