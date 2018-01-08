@@ -144,6 +144,7 @@ export default {
     addPoint: function () {
       var self = this
       self.newPoint.status = false
+      self.newPoint.serviceStatus = 'procesing'
       pointsRef.push(self.newPoint)
       self.newPoint.endPlace = ''
       self.newPoint.place = ''
