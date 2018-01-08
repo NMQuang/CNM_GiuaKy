@@ -1,27 +1,13 @@
 <template>
   <div id="app">
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+  <nav class="navbar navbar-custom navbar-expand-lg fixed-top">
     <div class="container">
-      <a class="navbar-brand" href="#">Quản lý khách hàng</a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
+     
+      <a class="navbar-brand title" href="index.html"><span>Grab QV</span> System</a>
+      
       <div class="collapse navbar-collapse" id="navbarResponsive">
         <ul class="navbar-nav ml-auto">
-          <li class="nav-item active">
-            <a class="nav-link" href="/home">Home
-              <span class="sr-only">(current)</span>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">About</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Services</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Contact</a>
-          </li>
+          <a class="navbar-brand" href="#">Quản lý khách hàng</a>
         </ul>
       </div>
     </div>
@@ -31,10 +17,15 @@
     <router-view/>
   </div>
 
-  <footer class="py-2 bg-dark fixed-bottom">
-    <div class="container">
-      <p class="m-0 text-center text-white">Copyright &copy; Vinh Nguyen 2017</p>
-    </div>
+  <footer class="py-2 fixed-bottom">
+    <nav class="navbar navbar-custom navbar-fixed-bottom" role="navigation">
+      <div class="container-fluid">
+          <div class="navbar-header">
+              
+              <a class="navbar-brand" href="index.html"><span>Development by QV</span> Solution</a>
+          </div>
+      </div><!-- /.container-fluid -->
+    </nav>
   </footer>
   </div>
 </template>
@@ -67,5 +58,14 @@ export default {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+}
+
+.navbar-custom {
+    background: #222;
+    height: 60px;
+}
+
+.title {
+  float: left;
 }
 </style>
