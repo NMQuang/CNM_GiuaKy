@@ -67,6 +67,6 @@ class MenuScreen extends Component {
 
 const mapStateToProps = (state) => ({
         user: state.user,
-        isSigning: state.isSigning
+        isSigning: state.isSigning,
     });
 export default connect(mapStateToProps, { signInAsync, signOut })(MenuScreen);

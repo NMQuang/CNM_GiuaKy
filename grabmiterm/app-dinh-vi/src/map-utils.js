@@ -11,28 +11,30 @@
 /* eslint space-before-function-paren: ["error", "never"] */
 /* eslint-env es6 */
 /* eslint no-extra-semi: "error" */
-const searchPlace = function(context, query) {
+const searchPlace = function(query) {
     if (!global.service) {
         global.service = new google.maps.places.PlacesService(global.map.$mapObject)
     }
     const request = { query }
-    global.service.textSearch(
-        request,
-        (response) => {
-            console.log('GMAP_SEARCH___', response)
-            if (!response || response.length === 0) {
-                console.error('Search failed')
-                return
-            }
-            const place = response[0].geometry
-            if (!place) {
-                console.error('Place not found')
-                return
-            }
-            context.$store.commit('SET_MARKER_POSITION', place.location)
-        },
-        (err) => console.error(err)
-    )
+    return new Promise((resolve, reject) => {
+        global.service.textSearch(
+            request,
+            (response) => {
+                console.log('GMAP_SEARCH___', response)
+                if (!response || response.length === 0) {
+                    console.log('Search failed');
+                    reject('Search failed');
+                }
+                const place = response[0].geometry
+                if (!place) {
+                    console.log('Place not found');
+                    reject('Place not found');
+                }
+                resolve(place.location);
+            },
+            (err) => reject(err)
+        )
+    });
 }
 
 const isNearCustomerWithinRadius = (customerPoint, driverPoint, fromRadius, toRadius) => {
@@ -62,4 +64,4 @@ const calcRoute = (start, end) => {
         }
     })
 }
-export { searchPlace, isNearCustomerWithinRadius, initializeDirectionsService, calcRoute }
+export { searchPlace, isNearCustomerWithinRadius, initializeDirectionsService, calcRoute, getListNearGiventPoint }

@@ -1,3 +1,7 @@
+import DriverLocation from '../lib/locationProcess';
+import store from '../redux/store';
+import Driver from '../lib/dbProcess';
+
 export function updateLocationDriver(location) {
     return { type: 'UPDATE_LOCATION', location };
 }
@@ -17,12 +21,16 @@ export function signIn(user) {
     return { type: 'SIGN_IN', user };
 }
 export function signOut() {
+    if (store.getState().isConnect) {
+        Driver.updateConnectStatus('offline', store.getState().user.userKey);
+        DriverLocation.stopPingLocation();
+    }
     return { type: 'SIGN_OUT' };
 }
 export function signInAsync(username, password) {
     return dispatch => {
         dispatch(startSignIn());
-        fetch('http://192.168.1.187:3000/login', {
+        fetch('https://easydriver-server.herokuapp.com/login', {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
@@ -69,5 +77,8 @@ export function initLocationDriverAsync() {
 }
 export function toggleConnection() {
     return { type: 'TOGGLE_CONNECTION' };
+}
+export function getUserPointData(pointData) {
+    return { type: 'GET_POINTDATA', pointData };
 }
 
