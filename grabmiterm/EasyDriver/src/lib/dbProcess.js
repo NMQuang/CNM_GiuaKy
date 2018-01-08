@@ -1,4 +1,5 @@
 import Firebase from 'firebase';
+import NavigatorService from '../navigations/NavigatorService';
 
 const config = {
     apiKey: 'AIzaSyBDOa513-q8BmPHmm1zlurdkkot3Z3bX-w',
@@ -24,8 +25,18 @@ Driver.updateDriverLocation = (location, driverKey) => {
     db.ref(`drivers/${driverKey}`).update({
         location
     });
-    db.ref(`drivers/${driverKey}`).once('value').then((snapshot) => alert(JSON.stringify(snapshot.val())));
 };
+let listenID;
 
+Driver.listenPointComing = (driverKey) => {
+    listenID = db.ref(`drivers/${driverKey}/status`).on('value', (snapshot) => {
+        if (snapshot.val() === 'busy') {
+            NavigatorService.reset('CustomerNotificationScreen');
+        }
+    });
+};
+Driver.stopListenPointComing = (driverKey) => {
+    db.ref(`drivers/${driverKey}/status`).off('value', listenID);
+};
 export default Driver;
 

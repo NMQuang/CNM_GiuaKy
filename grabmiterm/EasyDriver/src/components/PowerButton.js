@@ -11,27 +11,20 @@ import { toggleConnection } from '../redux/actionCreator';
 // compiled and added to the examples dev screen.
 
 class PowerButton extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            isPowerOn: false
-        };
-    }
     onPressButton() {
         if (this.props.driverKey) {
             let status = '';
             if (this.props.isConnect) {
                 status = 'offline';
+                Driver.stopListenPointComing(this.props.driverKey);
                 DriverLocation.stopPingLocation();
             } else {
                 status = 'online';
+                Driver.listenPointComing(this.props.driverKey);
                 DriverLocation.pingLocation(this.props.driverKey);
             }
             this.props.toggleConnection();
             Driver.updateConnectStatus(status, this.props.driverKey);
-            this.setState({
-                isPowerOn: !this.state.isPowerOn
-            });
         } else {
             alert('Bạn chưa đăng nhập');
         }
@@ -40,7 +33,7 @@ class PowerButton extends Component {
         return (
             <TouchableOpacity onPress={this.onPressButton.bind(this)}>
                 <Image
-                    source={this.state.isPowerOn ? images.powerOn : images.powerOff}
+                    source={this.props.isConnect && this.props.driverKey ? images.powerOn : images.powerOff}
                     style={styles.image}
                 />
             </TouchableOpacity>

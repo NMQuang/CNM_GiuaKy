@@ -1,15 +1,28 @@
 import React, { Component } from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
+import { connect } from 'react-redux';
 import Icon from 'react-native-vector-icons/EvilIcons';
 import styles from './styles/CustomerNotificationScreenStyle';
+import NavigatorService from '../navigations/NavigatorService';
 
-export default class CustomerNotificationScreen extends Component {
+class CustomerNotificationScreen extends Component {
+    acceptPoint() {
+        NavigatorService.reset('ProcessCustomerScreen');
+    }
     render() {
         return (
             <View style={styles.container}>
                 <View style={styles.costContainer}>
                     <Text style={styles.cost1}>80.000 VND</Text>
-                    <Text style={styles.vehicleType}>Xe máy thông thường</Text>
+                    {
+                        this.props.user.pointData.point.type === 'normal' ?
+                            (
+                                <Text style={styles.vehicleType}>Xe máy thông thường</Text>
+                            ) :
+                            (
+                                <Text style={styles.vehicleType}>Xe máy xịn</Text>
+                            )
+                    }
                 </View>
                 <View style={styles.infoContainer}>
                     <View style={styles.topInfo}>
@@ -20,12 +33,12 @@ export default class CustomerNotificationScreen extends Component {
                     </View>
                     <View style={styles.from}>
                         <Text style={styles.infoText}>
-                            38/14 Lam Sơn, Phường 2, Quận Tân Bình, Hồ Chí Minh
+                            {this.props.user.pointData.point.startPlace}
                         </Text>
                     </View>
                     <View style={styles.to}>
                         <Text style={styles.infoText}>
-                            234 Nguyễn Văn Cừ, Phường 3, Quận 5, Hồ Chí Minh
+                        {this.props.user.pointData.point.place}
                         </Text>
                     </View>
                     <View style={styles.footerInfo}>
@@ -35,10 +48,15 @@ export default class CustomerNotificationScreen extends Component {
                         <Icon name='chevron-down' size={30} color='#fff' />
                     </View>
                 </View>
-                <TouchableOpacity style={styles.acceptBtn}>
+                <TouchableOpacity onPress={this.acceptPoint} style={styles.acceptBtn}>
                     <Text style={styles.acceptText}>NHẬN CUỐC XE</Text>
                 </TouchableOpacity>
             </View>
         );
     }
 }
+
+const mapStateToProps = (state) => ({
+    user: state.user
+});
+export default connect(mapStateToProps)(CustomerNotificationScreen);

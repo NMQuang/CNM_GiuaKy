@@ -49,7 +49,7 @@ app.post('/login', (req, res) => {
                 });
             }
         })
-        .catch((err) => {console.log(err)})
+        .catch((err) => {res.json(err)})
 });
 
 const fn_verify = (req, res, next) => {

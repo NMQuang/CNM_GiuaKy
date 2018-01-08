@@ -25,6 +25,7 @@
             <th scope="col">Xe</th>
             <th scope="col">Loại xe</th>
             <th scope="col"></th>
+            <th scope="col"></th>
           </tr>
         </thead>
         <tbody>
@@ -32,7 +33,7 @@
             <td>{{pointData.pointInfo.place}}</td>
             <td v-if="pointData.pointInfo.status">Đã định vị</td>
             <td v-else>Chưa định vị</td>
-            <td v-if="pointData.driverInfo">Đã có xe nhận</td>
+            <td v-if="pointData.pointInfo.serviceStatus">{{pointData.pointInfo.serviceStatus}}</td>
             <td v-else>Chưa có xe nhận</td>
             <td>{{pointData.pointInfo.sđt}}</td>
             <td v-if="pointData.driverInfo">{{pointData.driverInfo.name}}</td>
@@ -42,6 +43,8 @@
             <td v-if="pointData.driverInfo">{{pointData.driverInfo.vehicle.service_type}}</td>
             <td v-else></td>
             <td v-if="pointData.driverInfo"><button class="btn btn-success" v-on:click="showRoute(pointData)">Xem đường đi</button></td>
+            <td v-else></td>
+            <td v-if="pointData.pointInfo.serviceStatus && pointData.pointInfo.serviceStatus === 'wait'"><button class="btn btn-danger" v-on:click="cancelWait(pointData)">Hủy chờ</button></td>
             <td v-else></td>
           </tr>
         </tbody>
@@ -65,18 +68,25 @@ export default {
       var start = new google.maps.LatLng(pointData.pointInfo.location.lat,pointData.pointInfo.location.lng)
       var end = new google.maps.LatLng(pointData.driverInfo.location.lat,pointData.driverInfo.location.lng)
       calcRoute(start,end)
+    },
+    cancelWait: function(pointData) {
+      driversRef.child(pointData.pointInfo.driverId).update({"status": "free", "point": null})
+      pointsRef.child(pointData.pointKey).update({"serviceStatus": 'processing', "driverId": null})
     }
   },
   data () {
-    var pointList = []
+    let pointList = []
     pointsRef.on('value',function(snapshot){
+      pointList.length = 0
       snapshot.forEach(function(snap){
-        var point = snap.val()
+        let point = snap.val()
+        var pointKey = snap.key;
         var driver;
         if(point.hasOwnProperty('driverId')) {
-          driversRef.on('value',function(snapshotDriver){
+          driversRef.once('value').then(function(snapshotDriver){
             driver = snapshotDriver.child(point.driverId).val()
             var pointData = {
+              pointKey,
               pointInfo: point,
               driverInfo: driver
             }
