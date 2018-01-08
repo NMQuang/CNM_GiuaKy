@@ -24,7 +24,7 @@
                     <th scope="col">Địa điểm đến</th>
                     <th scope="col">Loại xe</th>
                     <th scope="col">SĐT</th>
-                    <th scope="col">Status</th>
+                    
                 </tr>
             </thead>
             <tbody>
@@ -35,9 +35,8 @@
                     <td>{{point.place}}</td>
                     <td>{{point.type}}</td>
                     <td>{{point.sđt}}</td>
-                    <template v-if="point.status"><td>Done</td></template>
-                    <template v-else><td>Processing</td></template>
-                     <span class="pull-right" title="remove note" @click="deletePoint(point)">
+                    
+                    <span class="pull-right" title="remove note" @click="deletePoint(point)">
                         <span class="glyphicon glyphicon-remove"></span>
                     </span>
                 </tr>
@@ -129,7 +128,7 @@ export default {
       var self = this
       self.newPoint.status = false
       pointsRef.push(self.newPoint)
-      self.startPlace = ''
+      self.newPoint.startPlace = ''
       self.newPoint.place = ''
       self.newPoint.type = ''
       self.newPoint.sđt = ''
