@@ -1,14 +1,27 @@
 <template>
   <div class="container-fluid" id="app">
     
-      <div class="row">
-        <div class="col-md-4"> 
+    <nav class="navbar navbar-custom navbar-fixed-top" role="navigation">
+      <div class="container-fluid">
+          <div class="navbar-header">
+              <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                      data-target="#sidebar-collapse"><span class="sr-only">Toggle navigation</span>
+                  <span class="icon-bar"></span>
+                  <span class="icon-bar"></span>
+                  <span class="icon-bar"></span></button>
+              <a class="navbar-brand" href="index.html"><span>Grab QV</span> System</a>
+          </div>
+      </div><!-- /.container-fluid -->
+    </nav>
+      <div class="row home">
+        <div class="col-md-6"> 
           <legend>Thông tin khách hàng</legend>
           <table class="table">
             <thead class="thead-light">
                 <tr>
                     <th scope="col">#</th>
-                    <th scope="col">Địa điểm</th>
+                    <th scope="col">Địa điểm đón</th>
+                    <th scope="col">Địa điểm đến</th>
                     <th scope="col">Loại xe</th>
                     <th scope="col">SĐT</th>
                     <th scope="col">Status</th>
@@ -18,6 +31,7 @@
                 <tr v-for="point in points">
                    
                     <th scope="row">1</th>
+                    <td>{{point.startPlace}}</td>
                     <td>{{point.place}}</td>
                     <td>{{point.type}}</td>
                     <td>{{point.sđt}}</td>
@@ -31,11 +45,15 @@
           </table>
         </div>
 		
-        <div class="col-md-4">
+        <div class="col-md-4 grab">
             <form>
                 <legend>Đặt Grab</legend>
                 <div class="form-group">
                     <label for="pointPlace">Địa điểm đón</label>
+                    <input id="pointPlace" type="text" class="form-control" placeholder="Nhập địa điểm" v-model="newPoint.startPlace">
+                </div>
+                <div class="form-group">
+                    <label for="pointPlace">Địa điểm đến</label>
                     <input id="pointPlace" type="text" class="form-control" placeholder="Nhập địa điểm" v-model="newPoint.place">
                 </div>
                 <div class="form-group">
@@ -54,6 +72,18 @@
         </div>
         
       </div>
+    <nav class="navbar navbar-custom navbar-fixed-bottom" role="navigation">
+      <div class="container-fluid">
+          <div class="navbar-header">
+              <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                      data-target="#sidebar-collapse"><span class="sr-only">Toggle navigation</span>
+                  <span class="icon-bar"></span>
+                  <span class="icon-bar"></span>
+                  <span class="icon-bar"></span></button>
+              <a class="navbar-brand" href="index.html"><span>Development by QV</span> Solution</a>
+          </div>
+      </div><!-- /.container-fluid -->
+    </nav>
       
     </div>
 </template>
@@ -85,6 +115,7 @@ export default {
   data () {
     return {
       newPoint: {
+        startPlace: '',
         place: '',
         type: '',
         status: '',
@@ -98,6 +129,7 @@ export default {
       var self = this
       self.newPoint.status = false
       pointsRef.push(self.newPoint)
+      self.startPlace = ''
       self.newPoint.place = ''
       self.newPoint.type = ''
       self.newPoint.sđt = ''
@@ -119,8 +151,20 @@ export default {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
- 
   color: #2c3e50;
   margin-top: 60px;
+}
+
+.home {
+  margin-top:40px;
+}
+
+.navbar-custom {
+    background: #222;
+    height: 60px;
+}
+
+.grab {
+  margin-left:30px;
 }
 </style>
