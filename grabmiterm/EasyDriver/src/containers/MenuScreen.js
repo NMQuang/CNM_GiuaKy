@@ -53,6 +53,7 @@ class MenuScreen extends Component {
                                 placeholder='Enter password'
                                 placeholderTextColor='#4F4F4F'
                                 underlineColorAndroid='#fff'
+                                secureTextEntry
                             />
                             <TouchableOpacity style={styles.btnSignInOut} onPress={this.signIn.bind(this)}>
                                 <Text style={styles.btnSignInOutText}>Sign In</Text>
