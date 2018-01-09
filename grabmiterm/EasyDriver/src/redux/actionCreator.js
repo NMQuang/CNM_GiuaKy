@@ -82,3 +82,6 @@ export function getUserPointData(pointData) {
     return { type: 'GET_POINTDATA', pointData };
 }
 
+export function updateMapInfo(mapInfo) {
+    return { type: 'UPDATE_MAP', mapInfo };
+}

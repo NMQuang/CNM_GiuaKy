@@ -182,13 +182,15 @@ export default {
     },
     submitPointToDriver: function(driver) {
       let pointKey = this.selectedPoint['.key']
-      let point = this.selectedPoint
-      delete point['.key']
-      pointsRef.child(pointKey).update({"serviceStatus": 'wait', "driverId": driver.key})
-      db.ref(`drivers/${driver.key}`).update({"status": "busy", "pointData": {point,pointKey} })
+      db.ref(`points/${pointKey}`).once('value').then((snapshot) => {
+        let point = snapshot.val();
+        console.log(point);
+        pointsRef.child(pointKey).update({"serviceStatus": 'wait', "driverId": driver.key})
+        db.ref(`drivers/${driver.key}`).update({"status": "busy", "pointData": {point,pointKey} })
+      }); 
       this.selectedPoint = []
       this.drivers = []
-      this.mappAddress = ''
+      this.mapAddress = ''
     }
   },
   modules: { GoogleMap },

@@ -34,7 +34,6 @@
             <td v-if="pointData.pointInfo.status">Đã định vị</td>
             <td v-else>Chưa định vị</td>
             <td v-if="pointData.pointInfo.serviceStatus">{{pointData.pointInfo.serviceStatus}}</td>
-            <td v-else>Chưa có xe nhận</td>
             <td>{{pointData.pointInfo.sđt}}</td>
             <td v-if="pointData.driverInfo">{{pointData.driverInfo.name}}</td>
             <td v-else></td>

@@ -1,7 +1,7 @@
 import Firebase from 'firebase';
 import NavigatorService from '../navigations/NavigatorService';
 import store from '../redux/store';
-import { getUserPointData } from '../redux/actionCreator';
+import { getUserPointData, updateLocationDriver } from '../redux/actionCreator';
 
 const config = {
     apiKey: 'AIzaSyBDOa513-q8BmPHmm1zlurdkkot3Z3bX-w',

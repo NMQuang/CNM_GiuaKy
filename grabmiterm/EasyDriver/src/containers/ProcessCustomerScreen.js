@@ -6,6 +6,8 @@ import styles from './styles/ProcessCustomerScreenStyle';
 import GoogleMap from '../components/GoogleMap';
 import Driver from '../lib/dbProcess';
 import NavigatorService from '../navigations/NavigatorService';
+import { updateMapInfo } from '../redux/actionCreator';
+import DriverLocation from '../lib/locationProcess';
 
 class ProcessCustomerScreen extends Component {
     constructor(props) {
@@ -14,14 +16,57 @@ class ProcessCustomerScreen extends Component {
             isPicked: false
         };
     }
+    componentWillMount() {
+        const startLoc = {
+            latitude: this.props.location.location.latitude,
+            longitude: this.props.location.location.longitude
+        };
+        const desLoc = {
+            latitude: this.props.pointData.point.location.lat,
+            longitude: this.props.pointData.point.location.lng
+        };
+        DriverLocation.getDirections(startLoc, desLoc)
+        .then((coords) => {
+            const mapInfo = {
+                marker: {
+                    lat: this.props.pointData.point.location.lat,
+                    lng: this.props.pointData.point.location.lng
+                },
+                coords
+            };
+            this.props.updateMapInfo(mapInfo);
+        })
+        .catch((error) => console.log(error));
+    }
     pickedPoint() {
         Driver.sendPickedSignal(this.props.pointData.pointKey);
         this.setState({
             isPicked: true
         });
+        const startLoc = {
+            latitude: this.props.location.location.latitude,
+            longitude: this.props.location.location.longitude
+        };
+        const desLoc = {
+            latitude: this.props.pointData.point.endLocation.lat,
+            longitude: this.props.pointData.point.endLocation.lng
+        };
+        DriverLocation.getDirections(startLoc, desLoc)
+        .then((coords) => {
+            const mapInfo = {
+                marker: {
+                    lat: this.props.pointData.point.endLocation.lat,
+                    lng: this.props.pointData.point.endLocation.lng
+                },
+                coords
+            };
+            this.props.updateMapInfo(mapInfo);
+        })
+        .catch((error) => console.log(error));
     }
     returnPoint() {
         Driver.returnPoint(this.props.pointData.pointKey, this.props.driverKey);
+        this.props.updateMapInfo({ marker: null, coords: [] });
         NavigatorService.reset('DrawerNavigator');
     }
     render() {
@@ -36,7 +81,7 @@ class ProcessCustomerScreen extends Component {
                     <View style={styles.midHeader}>
                         <Text style={styles.midHeaderText}>
                             {!this.state.isPicked ? 
-                                this.props.pointData.endPlace : this.props.pointData.place}
+                                this.props.pointData.point.place : this.props.pointData.point.endPlace}
                         </Text>
                     </View>
                     <View style={styles.bottomHeader}>
@@ -46,7 +91,15 @@ class ProcessCustomerScreen extends Component {
                         </View>
                     </View>
                 </View>
-                <GoogleMap styles={styles.map} />
+                { 
+                    this.state.isPicked ? 
+                        <GoogleMap 
+                            styles={styles.map} 
+                        /> 
+                        : <GoogleMap 
+                            styles={styles.map} 
+                        />
+                }    
                 <View style={styles.footer}>
                     <View style={styles.footerBtnContainer}>
                         <TouchableOpacity style={styles.roundButton}>
@@ -75,6 +128,7 @@ class ProcessCustomerScreen extends Component {
 
 const mapStateToProps = (state) => ({
         pointData: state.user.pointData,
-        driverKey: state.user.userKey
+        driverKey: state.user.userKey,
+        location: state.location
     });
-export default connect(mapStateToProps)(ProcessCustomerScreen);
+export default connect(mapStateToProps, { updateMapInfo })(ProcessCustomerScreen);
