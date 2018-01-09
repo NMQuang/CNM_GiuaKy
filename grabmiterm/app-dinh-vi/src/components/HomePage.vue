@@ -70,138 +70,213 @@
 </template>
 
 <script>
-import GoogleMap from './GoogleMap.vue'
-import { pointsRef, driversRef, db } from '../firebase.js'
-import { searchPlace, isNearCustomerWithinRadius, initializeDirectionsService, calcRoute } from '../map-utils'
+import GoogleMap from "./GoogleMap.vue";
+import { pointsRef, driversRef, db } from "../firebase.js";
+import {
+  searchPlace,
+  isNearCustomerWithinRadius,
+  initializeDirectionsService,
+  calcRoute
+} from "../map-utils";
 
 export default {
-  name: 'VinhNguyen',
+  name: "VinhNguyen",
   firebase: {
-    points: pointsRef,
+    points: pointsRef
   },
   methods: {
-    addMapAddress: function (event,point) {
-      this.drivers = []
-      this.mapAddress = event.target.text
-      this.selectedPoint = point
-      searchPlace(event.target.text)
-        .then((location) => this.$store.commit('SET_MARKER_POSITION', location))
+    addMapAddress: function(event, point) {
+      this.drivers = [];
+      this.mapAddress = event.target.text;
+      this.selectedPoint = point;
+      searchPlace(event.target.text).then(location =>
+        this.$store.commit("SET_MARKER_POSITION", location)
+      );
     },
     submitGeocode: function(event) {
-      event.preventDefault()
-      var center = this.$store.getters.markers[0].position
+      event.preventDefault();
+      var center = this.$store.getters.markers[0].position;
       let resultList = [];
-      searchPlace(this.selectedPoint['endPlace']).then((location) => {
-        pointsRef.child(this.selectedPoint['.key'])
-                  .update({"endLocation": {lat: location.lat(), lng: location.lng()}});
-      })
-      pointsRef.child(this.selectedPoint['.key']).update({"location": {lat: center.lat(), lng: center.lng()},
-                                                          "status": true })
-      driversRef.on('value', function(snapshot) {
-        resultList.length = 0;
-        let driversJson = snapshot.toJSON();
-        Object.keys(driversJson).forEach((key) => {
-          var driverData = driversJson[key]
-          var centerPoint = new google.maps.LatLng(center.lat(),center.lng())
-          var driverPoint = new google.maps.LatLng(driverData.location.lat,driverData.location.lng)
-          if(isNearCustomerWithinRadius(centerPoint ,driverPoint, 0, 300) !== -1) {
-            var driverFullData = {
-              key,
-              data: driverData,
-              distance: isNearCustomerWithinRadius(centerPoint, driverPoint, 0, 300)
-            } 
-            resultList.push(driverFullData)
-          }
+      searchPlace(this.selectedPoint["endPlace"]).then(location => {
+        pointsRef.child(this.selectedPoint[".key"]).update({
+          endLocation: { lat: location.lat(), lng: location.lng() }
         });
-        if(resultList.length < 10) {
-          Object.keys(driversJson).forEach((key) => {
-            var driverData = driversJson[key]
-            var centerPoint = new google.maps.LatLng(center.lat(),center.lng())
-            var driverPoint = new google.maps.LatLng(driverData.location.lat,driverData.location.lng)
-            if(isNearCustomerWithinRadius(centerPoint ,driverPoint, 300, 600) !== -1) {
+      });
+      pointsRef.child(this.selectedPoint[".key"]).update({
+        location: { lat: center.lat(), lng: center.lng() },
+        status: true
+      });
+      let selected = this.selectedPoint;
+      console.log(selected);
+      driversRef.on("value", function(snapshot) {
+        resultList.length = 0;
+        if (selected["serviceStatus"] === "processing") {
+          let driversJson = snapshot.toJSON();
+          Object.keys(driversJson).forEach(key => {
+            var driverData = driversJson[key];
+            var centerPoint = new google.maps.LatLng(
+              center.lat(),
+              center.lng()
+            );
+            var driverPoint = new google.maps.LatLng(
+              driverData.location.lat,
+              driverData.location.lng
+            );
+            if (
+              isNearCustomerWithinRadius(centerPoint, driverPoint, 0, 300) !==
+              -1
+            ) {
               var driverFullData = {
                 key,
                 data: driverData,
-                distance: isNearCustomerWithinRadius(centerPoint, driverPoint, 300, 600)
+                distance: isNearCustomerWithinRadius(
+                  centerPoint,
+                  driverPoint,
+                  0,
+                  300
+                )
+              };
+              resultList.push(driverFullData);
+            }
+          });
+          if (resultList.length < 10) {
+            Object.keys(driversJson).forEach(key => {
+              var driverData = driversJson[key];
+              var centerPoint = new google.maps.LatLng(
+                center.lat(),
+                center.lng()
+              );
+              var driverPoint = new google.maps.LatLng(
+                driverData.location.lat,
+                driverData.location.lng
+              );
+              if (
+                isNearCustomerWithinRadius(
+                  centerPoint,
+                  driverPoint,
+                  300,
+                  600
+                ) !== -1
+              ) {
+                var driverFullData = {
+                  key,
+                  data: driverData,
+                  distance: isNearCustomerWithinRadius(
+                    centerPoint,
+                    driverPoint,
+                    300,
+                    600
+                  )
+                };
+                resultList.push(driverFullData);
               }
-              resultList.push(driverFullData)
-            }
+            });
+          }
+          if (resultList.length < 10) {
+            Object.keys(driversJson).forEach(key => {
+              var driverData = driversJson[key];
+              var centerPoint = new google.maps.LatLng(
+                center.lat(),
+                center.lng()
+              );
+              var driverPoint = new google.maps.LatLng(
+                driverData.location.lat,
+                driverData.location.lng
+              );
+              if (
+                isNearCustomerWithinRadius(
+                  centerPoint,
+                  driverPoint,
+                  600,
+                  1000
+                ) !== -1
+              ) {
+                var driverFullData = {
+                  key,
+                  data: driverData,
+                  distance: isNearCustomerWithinRadius(
+                    centerPoint,
+                    driverPoint,
+                    600,
+                    1000
+                  )
+                };
+                resultList.push(driverFullData);
+              }
+            });
+          }
+          resultList.sort(function(a, b) {
+            return a["distance"] > b["distance"]
+              ? 1
+              : a["distance"] < b["distance"] ? -1 : 0;
           });
+          resultList.splice(9, resultList.length - 10);
+          console.log(resultList);
         }
-        if(resultList.length < 10) {
-          Object.keys(driversJson).forEach((key) => {
-            var driverData = driversJson[key]
-            var centerPoint = new google.maps.LatLng(center.lat(),center.lng())
-            var driverPoint = new google.maps.LatLng(driverData.location.lat,driverData.location.lng)
-            if(isNearCustomerWithinRadius(centerPoint ,driverPoint, 600, 1000) !== -1) {
-              var driverFullData = {
-                key,
-                data: driverData,
-                distance: isNearCustomerWithinRadius(centerPoint, driverPoint, 600, 1000)
-              } 
-              resultList.push(driverFullData)
-            }
-          });
-        }
-        resultList.sort(function(a,b){
-        return (a['distance'] > b['distance']) ? 1 : ((a['distance'] < b['distance']) ? -1 : 0)});
-        resultList.splice(9, resultList.length - 10);
-        console.log(resultList);
       });
       this.drivers = resultList;
     },
-    handleSearchPlace: function () {
-      const element = $('#my-place-search-box')
+    handleSearchPlace: function() {
+      const element = $("#my-place-search-box");
       if (!element || element.length === 0) {
-        console.error('Search box not found')
-        return
+        console.error("Search box not found");
+        return;
       }
-      const query = element[0].value
-      console.log('query__', query)
-      if (!query || query === '') {
-        console.error('Query null')
-        return
+      const query = element[0].value;
+      console.log("query__", query);
+      if (!query || query === "") {
+        console.error("Query null");
+        return;
       }
-      searchPlace(query).then((location) => {this.$store.commit('SET_MARKER_POSITION', location)})
+      searchPlace(query).then(location => {
+        this.$store.commit("SET_MARKER_POSITION", location);
+      });
     },
-    resetMapAddress: function (event) {
-      this.mapAddress = ''
+    resetMapAddress: function(event) {
+      this.mapAddress = "";
     },
-    handlePlaceChanged: function (place) {
+    handlePlaceChanged: function(place) {
       if (!place || !place.geometry) {
-        console.log('Place was not found')
-        return
+        console.log("Place was not found");
+        return;
       }
 
       const position = {
         lat: place.geometry.location.lat(),
         lng: place.geometry.location.lng()
-      }
+      };
 
-      this.$store.commit('SET_MARKER_POSITION', position)
+      this.$store.commit("SET_MARKER_POSITION", position);
     },
     submitPointToDriver: function(driver) {
-      let pointKey = this.selectedPoint['.key']
-      db.ref(`points/${pointKey}`).once('value').then((snapshot) => {
-        let point = snapshot.val();
-        console.log(point);
-        pointsRef.child(pointKey).update({"serviceStatus": 'wait', "driverId": driver.key})
-        db.ref(`drivers/${driver.key}`).update({"status": "busy", "pointData": {point,pointKey} })
-      }); 
-      this.selectedPoint = []
-      this.drivers = []
-      this.mapAddress = ''
+      let pointKey = this.selectedPoint[".key"];
+      db
+        .ref(`points/${pointKey}`)
+        .once("value")
+        .then(snapshot => {
+          let point = snapshot.val();
+          console.log(point);
+          pointsRef
+            .child(pointKey)
+            .update({ serviceStatus: "wait", driverId: driver.key });
+          db
+            .ref(`drivers/${driver.key}`)
+            .update({ status: "busy", pointData: { point, pointKey } });
+        });
+      this.selectedPoint = [];
+      this.drivers = [];
+      this.mapAddress = "";
     }
   },
   modules: { GoogleMap },
-  data () {
+  data() {
     return {
-      mapAddress: '',
+      mapAddress: "",
       drivers: [],
       selectedPoint: []
-    }
+    };
   }
-}
+};
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
