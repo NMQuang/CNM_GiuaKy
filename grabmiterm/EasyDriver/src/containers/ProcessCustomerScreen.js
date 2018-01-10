@@ -6,7 +6,7 @@ import styles from './styles/ProcessCustomerScreenStyle';
 import GoogleMap from '../components/GoogleMap';
 import Driver from '../lib/dbProcess';
 import NavigatorService from '../navigations/NavigatorService';
-import { updateMapInfo } from '../redux/actionCreator';
+import { updateMapInfo, initLocationDriverAsync } from '../redux/actionCreator';
 import DriverLocation from '../lib/locationProcess';
 
 class ProcessCustomerScreen extends Component {
@@ -17,6 +17,7 @@ class ProcessCustomerScreen extends Component {
         };
     }
     componentWillMount() {
+        this.props.initLocationDriverAsync();
         const startLoc = {
             latitude: this.props.location.location.latitude,
             longitude: this.props.location.location.longitude
@@ -131,4 +132,4 @@ const mapStateToProps = (state) => ({
         driverKey: state.user.userKey,
         location: state.location
     });
-export default connect(mapStateToProps, { updateMapInfo })(ProcessCustomerScreen);
+export default connect(mapStateToProps, { updateMapInfo, initLocationDriverAsync })(ProcessCustomerScreen);

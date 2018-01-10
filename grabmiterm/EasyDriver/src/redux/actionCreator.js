@@ -24,6 +24,7 @@ export function signOut() {
     if (store.getState().isConnect) {
         Driver.updateConnectStatus('offline', store.getState().user.userKey);
         DriverLocation.stopPingLocation();
+        store.dispatch(toggleConnection());
     }
     return { type: 'SIGN_OUT' };
 }
